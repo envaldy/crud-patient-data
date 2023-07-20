@@ -152,30 +152,30 @@ def input_name():
 def input_age():
     age = input("input patient's age: ")
 
-    while not age.isnumeric():
-        print('age must a numeric')
+    while not age.isnumeric() or int(age) == 0:
+        print('age must a numeric or cannot 0')
         age = input("input patient's age: ")
     
     return age
 
 def input_height():
     height = input("input patient's height in CM: ")
-    while not height.isnumeric() or int(height) >= 300:
+    while not height.isnumeric() or int(height) >= 300 or int(height) == 0:
         if not height.isnumeric():
             print('height must be a numeric')
         else:
-            print('height must be below 300 CM limit')
+            print('height must be below 300 CM limit or cannot 0')
         height = input("input patient's height in CM: ")
     
     return height
 
 def input_weight():
     weight = input("input patient's Weight in KG: ")
-    while not weight.isnumeric() or int(weight) >= 1000:
+    while not weight.isnumeric() or int(weight) >= 1000 or int(weight) == 0:
         if not weight.isnumeric():
             print('height must be a numeric')
         else:
-            print('height must be below 1000 KG limit')
+            print('height must be below 1000 KG limit or cannot 0')
         weight = input("input patient's Weight IN KG: ")
     
     return weight
@@ -197,13 +197,15 @@ def input_last_treatment():
 def input_current_treatment():
     current_treatment = input("input patient's current treatment(max 30 characters): ")
     maxchar_ct = 30
+    while len(current_treatment) > maxchar_ct or not current_treatment.strip() or not current_treatment.replace(' ', ''):
+            if not current_treatment.strip():
+                pass
+            else:
+                print('name exceeded 30 characters! and cannot be blank')
+            current_treatment = input("input patient's current treatment(max 30 characters): ")
 
-    while len(current_treatment) > maxchar_ct:
-        print('name exceeded 30 characters!')
-        current_treatment = input("input patient's current treatment(max 30 characters): ")
-        if len(current_treatment) <= maxchar_ct:
-            break
-    
+
+
     current_treatment_count = current_treatment+(maxchar_ct - len(current_treatment))*' '
     return current_treatment_count
 
@@ -211,8 +213,8 @@ def input_date_last_visit():
     date_last_visit = input("input patient's visit DATE(format: yyyy/mm/dd): ")
     format_d = date_last_visit.split('/')
 
-    while not (len(format_d) == 3 and len(format_d[0]) == 4 and (len(format_d[1]) <= 2 and int(format_d[1]) >= 1 and int(format_d[1]) <= 12) and (len(format_d[2]) <= 2 and int(format_d[2]) >= 1 and int(format_d[2]) <= 31)):
-        print('invalid date format')
+    while not (len(format_d) == 3 and len(format_d[0]) == 4 and (format_d[0]) == '2023' and (len(format_d[1]) <= 2 and int(format_d[1]) >= 1 and int(format_d[1]) <= 12) and (len(format_d[2]) <= 2 and int(format_d[2]) >= 1 and int(format_d[2]) <= 31)):
+        print('invalid date format and the year must 2023')
         date_last_visit = input("input patient's visit DATE(format: yyyy/mm/dd): ")
         format_d = date_last_visit.split('/')
     
@@ -223,8 +225,8 @@ def input_date_discharged(previous_date):
     date_discharged = input("input patient's discharged DATE(format: yyyy/mm/dd): ")
     format_o = date_discharged.split('/')
 
-    while not (len(format_o) == 3 and len(format_o[0]) == 4 and (len(format_o[1]) <= 2 and int(format_o[1]) >= 1 and int(format_o[1]) <= 12) and (len(format_o[2]) <= 2 and int(format_o[2]) >= 1 and int(format_o[2]) <= 31)):
-        print('invalid date format')
+    while not (len(format_o) == 3 and len(format_o[0]) == 4 and (format_d[0]) == '2023' and (len(format_o[1]) <= 2 and int(format_o[1]) >= 1 and int(format_o[1]) <= 12) and (len(format_o[2]) <= 2 and int(format_o[2]) >= 1 and int(format_o[2]) <= 31)):
+        print('invalid date format and the year must 2023')
         date_discharged = input("input patient's out DATE(format: yyyy/mm/dd): ")
         format_o = date_discharged.split('/')
 
@@ -291,7 +293,7 @@ def edit_category():
         print(f"{xx}.   {val['name']} ({val['init']})")
     print()
 
-    edit_category_choice = input("choose 1 to add, choose 2 to remove, choose any to go back: ")
+    edit_category_choice = input("choose 1 to add,\nchoose 2 to remove,\nchoose any to go back: ")
     if edit_category_choice == '1':
         categoryint = len(doctor_category) + 1
         category_number = str(categoryint)
@@ -320,7 +322,7 @@ def edit_category():
                 break
 
         if revert:
-            doctor_category[category_number] = {'name': category_name, 'init': category_code}
+            doctor_category[category_number] = {'name': category_name, 'init': category_code.upper()}
             for xx, val in doctor_category.items():
                 print(f"{xx}.   {val['name']} ({val['init']})")
         else:
@@ -452,7 +454,7 @@ def medical_letter():
             break
 
     if search_one == False:
-            print('Data does not exist')
+        print('Data does not exist')
     else:
         print('data found! name = ',patients[find][1])
         save = input("do you want to proceed to print doctor's letter?(y/n): ")
@@ -484,7 +486,11 @@ def medical_letter():
 #=====MAIN FUNCTION AUTHORITY ACCESS=====
 
 def authority_access():
+    print('===============================================')
     print('You are entering authority access,\npress 1 for superadmin account\npress 2 for doctor account\npress 3 to go back\nplease sign in based on your role ')
+    print()
+    print('BEWARE! in order of safetyness, any wrong input will return back to main menu.')
+    print('===============================================')
     authority1 = input('your input: ')
     if authority1 == '1':
         word = input('input your password as superadmin: ')
@@ -537,7 +543,6 @@ def superadmin():
         print('monthly report proceed')
         reporting()
 
-def superadmin():
     print('''
     ================
     As SUPERADMIN YOU CAN DO:
@@ -595,22 +600,25 @@ def display_data():
             print(f'{idx}\t{patient[0]}\t{patient[1]}\t{patient[2]}\t{patient[3]}\t{patient[4]}\t{patient[5]}\t{patient[6]}\t{patient[7]}\t{patient[8]}\t{patient[9]}')
         
 def display_data_single():
-    find_id = input('input 7 digits patient id: ')    
-    while not find_id.isnumeric():
-        print('invalid, input must only be numeric')
-        find_id = input('input 7 digits patient id: ')
-    find_idx = int(find_id)
-    search_one = False
-    for find in range(len(patients)):
-        if patients[find][0] == find_idx:
-            print('found!')
-            search_one = True
-            break
-    if search_one == False:
+    if len(patients) == 0:
         print('Data does not exist')
     else:
-        display_table()
-        print(f'     {patients[find][0]}\t{patients[find][1]}\t{patients[find][2]}\t{patients[find][3]}\t{patients[find][4]}\t{patients[find][5]}\t{patients[find][6]}\t{patients[find][7]}\t{patients[find][8]}\t{patients[find][9]}')
+        find_id = input('input 7 digits patient id: ')    
+        while not find_id.isnumeric():
+            print('invalid, input must only be numeric')
+            find_id = input('input 7 digits patient id: ')
+        find_idx = int(find_id)
+        search_one = False
+        for find in range(len(patients)):
+            if patients[find][0] == find_idx:
+                print('found!')
+                search_one = True
+                break
+        if search_one == False:
+            print('Data does not exist')
+        else:
+            display_table()
+            print(f'     {patients[find][0]}\t{patients[find][1]}\t{patients[find][2]}\t{patients[find][3]}\t{patients[find][4]}\t{patients[find][5]}\t{patients[find][6]}\t{patients[find][7]}\t{patients[find][8]}\t{patients[find][9]}')
 
 def main_display_data():
     print('''
